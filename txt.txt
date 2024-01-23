@@ -1,0 +1,6 @@
+ORDER STATUS : 
+4. Order Placed 
+3. Order Cancelled 
+2. Order Confirmed 
+1.   
+0. Delivered

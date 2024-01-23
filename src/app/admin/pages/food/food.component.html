@@ -1,0 +1,133 @@
+<app-navbar></app-navbar>
+<section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search' ></i>
+      </div>
+      <div class="profile-details">
+        <img src="https://icon2.cleanpng.com/20180816/jae/kisspng-computer-icons-login-user-system-administrator-ima-editing-mafsyah-template-5b75843a7b1045.0356392015344282185041.jpg" alt="">
+        <span class="admin_name">{{this.loginService.adminName}}</span>
+        <i class='bx bx-chevron-down' ></i>
+      </div>
+    </nav>
+    <!-- ;k -->
+    <div class="home-content">
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <div *ngIf="foodTable">
+            <button class="btn btn-outline-dark px-2 py-1" (click)="addFoodPage()"> Add Food</button>
+            <h3 class="text-center mb-4"><u>Food Tabel</u> </h3>
+            <div class="text-center">
+              <button class="alert alert-warning p-2 mb-4" *ngIf="message!==''"> {{message}}</button>
+            </div>
+            <table class="table table-responsive" *ngIf="foodData else noFood">
+              <thead>
+                <tr>
+                  <th scope="col">Action</th>
+                  <th scope="col">Id</th>
+                  <th scope="col">Picture</th>
+                  <th scope="col">Food Name</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Publish Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of foodData">
+                  <th scope="row">
+                      <button class="btn btn-success mx-1" (click)="routeEditForm(data.food_id)"><i class="bx bx-pencil"></i></button>
+                      <button class="btn btn-danger" (click)="deleteFood(data.food_id)" ><i class="bx bx-trash"></i></button>
+                  </th>
+                  <th scope="row">{{data.food_id}}</th>
+                  <td><img src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_1024/wzfq7djolqxgdhghebbq" width="100" height="100" alt="image" class=""></td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.price}}</td>
+                  <td>{{data.short_description}}</td>
+                  <td>{{data.food_id | date:"short"}}</td>
+                </tr>
+                <tr>
+              </tbody>
+            </table>
+            <div class="button" *ngIf="foodData && itemCount >=10">
+              <a href="#">See All</a>
+            </div>
+            <ng-template #noFood>
+              <button class="alert alert-info text-center my-4"> No Food available yet...</button>
+            </ng-template>
+          </div>
+          <!-- End Food Table -->
+
+          <!-- Start Food add form  -->
+            <div *ngIf="addForm">
+              <button class="btn btn-sm btn-warning px-2 py-1" (click)="backToTable()"> Back</button>
+              <h3 class="text-center underline"> <u>Add New Food </u> :)  </h3>
+              <form class="form" [formGroup]="addFoodForm" (ngSubmit)="addFood()" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Food Name</label>
+                  <input formControlName="name" type="text" class="form-control p-1" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  <span class="invaild-feedback text-danger" *ngIf="name && name.invalid && name.touched" >Please enter valid input</span>            
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Price</label>
+                  <input formControlName="price" type="text" class="form-control p-1" id="exampleInputPassword1">
+                  <span class="invaild-feedback text-danger" *ngIf="price && price.invalid && price.touched" >Please enter valid input</span>            
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Show description</label>
+                  <input formControlName="description" type="text" class="form-control p-1" id="exampleInputPassword1">
+                  <span class="invaild-feedback text-danger" *ngIf="description && description.invalid && description.touched" >Please enter valid input</span>            
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Food picuture</label>
+                  <input (change)="imageProcessing($event)" type="file" class="form-control p-1" id="exampleInputPassword1" accept="image/*">
+                  <img src="{{picutreUrl}}"  class="my-1" alt="" width="100" height="80" *ngIf="showPicture else errorImage">
+                  <ng-template #errorImage>
+                    <span class="invaild-feedback text-danger" *ngIf="picture">Please select picutre of food</span>   
+                  </ng-template>
+                </div>
+                <button type="submit" [disabled]="!addFoodForm.valid" class="btn btn-primary px-2 py-1">Add Food</button>
+              </form>
+            </div>
+          <!-- End Food add form  -->
+
+          <!-- Start Edit form  -->
+            <div *ngIf="showEditForm">
+              <button class="btn btn-sm btn-warning px-2 py-1" (click)="backToTable()"> Back</button>
+              <h3 class="text-center underline"> <u> Edit Food Update </u> :)  </h3>
+              <form class="form" [formGroup]="addFoodForm" (ngSubmit)="updateFood()" enctype="multipart/form-data">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Food Name</label>
+                  <input formControlName="name" type="text" class="form-control p-1" id="exampleInputEmail1" aria-describedby="emailHelp">
+                  <span class="invaild-feedback text-danger" *ngIf="name && name.invalid && name.touched" >Please enter valid input</span>            
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Price</label>
+                  <input formControlName="price" type="text" class="form-control p-1" id="exampleInputPassword1">
+                  <span class="invaild-feedback text-danger" *ngIf="price && price.invalid && price.touched" >Please enter valid input</span>            
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Show description</label>
+                  <input formControlName="description" type="text" class="form-control p-1" id="exampleInputPassword1">
+                  <span class="invaild-feedback text-danger" *ngIf="description && description.invalid && description.touched" >Please enter valid input</span>            
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">Food picuture</label>
+                  <input (change)="imageProcessing($event)" type="file" class="form-control p-1" id="exampleInputPassword1" accept="image/*">
+                  <img src="{{picutreUrl}}"  class="my-1" alt="" width="100" height="80" *ngIf="showPicture else errorImage">
+                  <ng-template #errorImage>
+                    <span class="invaild-feedback text-danger" *ngIf="picture">Please select picutre of food</span>   
+                  </ng-template>
+                </div>
+                <button type="submit" [disabled]="addFoodForm.invalid" class="btn btn-success px-2 py-1">Update Data</button>
+              </form>
+            </div>
+          <!-- End Edit  Food form  -->
+        </div>
+      </div>    
+    </div>
+  </section>

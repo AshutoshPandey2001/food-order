@@ -1,0 +1,70 @@
+<app-navbar></app-navbar>
+<div class="input-group d-flex justify-content-center mt-5" *ngIf="!orderData else trackOrder">
+    <div class="form-outline d-flex mt-5">
+        <form [formGroup]="searchForm">
+            <input type="search"  formControlName="orderId" class="form-control px-2 py-1" placeholder="Enter Order id" required/>
+        </form>
+        <button type="button" class="btn btn-danger px-2 py-1 mx-1" (click)="searchOrder()">
+            <i class="bi bi-search text-danger"></i>
+        </button>
+    </div>
+</div>
+<ng-template #trackOrder>
+    <div class="d-flex flex-column justify-content-center align-items-center" id="order-heading">
+        <button class="btn-sm btn-dark px-2 my-4" onclick="window.print()">Print Receipt </button>
+        <div class="text-uppercase">
+            <p>Order detail</p>
+        </div>
+        <div class="h4">  {{orderData.order_date | date:"full"}}</div>
+        <div class="pt-1">
+            <p>Order #{{orderData.id}} is currently
+                <b class="text-dark" *ngIf="orderData.order_status == 4">Processing</b>
+                <b class="text-dark" *ngIf="orderData.order_status == 3">Order Cancalled</b>
+                <b class="text-dark" *ngIf="orderData.order_status == 2">Order Confirm</b>
+                <b class="text-dark" *ngIf="orderData.order_status == 1">Food on the way</b>
+                <b class="text-dark" *ngIf="orderData.order_status == 0">Delivered</b>...
+            </p>
+        </div>
+        <div class="btn close text-white" (click)="closeOrder()"> &times; </div>
+    </div>
+    <div class="wrapper bg-white">
+        <div class="table-responsive">
+            <table class="table table-borderless">
+                <thead>
+                    <tr class="text-uppercase text-muted">
+                        <th scope="col">product</th>
+                        <th scope="col" class="text-right">total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"> <div class="mx-3"> <img src="{{orderFoodData.picture}}" alt="apple" class="rounded-circle" width="50" height="50"> {{orderFoodData.name}}</div> </th>
+                        <td class="text-right"><b> {{orderFoodData.price | currency:'INR'}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row border rounded p-1 my-3">
+            <div class="col-md-6 p-2">
+                <div class="d-flex flex-column align-items start"> <b>Contact Details</b>
+                    <p class="text-justify pt-2">Mobile No. - {{orderData.phone_number}}</p>
+                    <p class="text-justify">Name- {{orderData.name}}</p>
+                </div>
+            </div>
+            <div class="col-md-6 p-2">
+                <div class="d-flex flex-column align-items start"> <b>Shipping Address</b>
+                    <p class="text-justify pt-2"> {{orderData.delivery_address}}</p>
+                    <p class="text-justify">India</p>
+                </div>
+            </div>
+        </div>
+        <div class="pl-3 font-weight-bold">Status</div>
+        <div class="d-sm-flex justify-content-between rounded my-3 subscriptions">
+            <div> Order Id: <b>#{{orderData.id}}</b> </div>
+            <div>Status:  {{order_status}}</div>
+            <div>Payment Method: COD</div>
+            <div> Total Charges : <b> {{orderFoodData.price | currency:"INR"}}</b> </div>
+        </div>
+    </div>
+</ng-template>
+<app-footer></app-footer>

@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+<section class="home-section">
+    <nav>
+      <div class="sidebar-button">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search' ></i>
+      </div>
+      <div class="profile-details">
+        <img src="https://icon2.cleanpng.com/20180816/jae/kisspng-computer-icons-login-user-system-administrator-ima-editing-mafsyah-template-5b75843a7b1045.0356392015344282185041.jpg" alt="">
+        <span class="admin_name"> {{this.loginService.adminName}} </span>
+        <i class='bx bx-chevron-down' ></i>
+      </div>
+    </nav>
+    
+    <div class="home-content">
+      <div class="sales-boxes">
+        <div class="recent-sales box">
+          <!-- Start Order Table -->
+          <div>
+            <h3 class="text-center mb-4"><u>Customers Order List</u> </h3>
+            <div class="text-center mb-4" *ngIf="deleteMsg !== ''">
+              <button class="alert alert-danger px-2">
+                {{deleteMsg}}
+              </button>
+            </div>
+            <table class="table table-responsive" *ngIf="orderData else noOrder">
+              <thead>
+                <tr>
+                  <th scope="col">Status</th>
+                  <th scope="col">Id</th>
+                  <th scope="col">Food_id</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Delivery Address</th>
+                  <th scope="col">Order Date</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of orderData">
+                  <th scope="row">  
+                    <select class="form-select p-1" aria-label="Default select example" (change)="orderStatus($event,data.id)">
+                      <option  *ngIf="data.order_status == 4"selected> Order Placed</option>
+                      <option  *ngIf="data.order_status == 3"selected> Order Cancelled</option>
+                      <option  *ngIf="data.order_status == 2"selected> Order Confirmed</option>
+                      <option  *ngIf="data.order_status == 1"selected> Food on the way</option>
+                      <option  *ngIf="data.order_status == 0"selected> Delivered</option>
+                      <option value="4">Order Placed</option>
+                      <option value="3">Order Cancelled</option>
+                      <option value="2">Order Confirmed</option>
+                      <option value="1">Food on the way</option>
+                      <option value="0">Delivered</option>
+                    </select>
+                  </th>
+                  <td> {{data.id}} </td>
+                  <td>{{data.food_id}}</td> <!-- make clickable for get ordered food details-->
+                  <td>{{data.name}}</td>
+                  <td>{{data.phone_number}}</td>
+                  <td>{{data.delivery_address}} </td>
+                  <td>{{data.order_date | date:"short"}}</td>
+                  <th scope="row">
+                    <button class="btn btn-success mx-1" (click)="editOrder()"><i class="bx bx-pencil"></i></button>
+                    <button class="btn btn-danger" (click)="deleteOrder(data.id, data.order_status)"><i class="bx bx-trash"></i></button>
+                </th>
+                </tr>
+                <tr>
+              </tbody>
+            </table>
+            <div class="button" *ngIf="orderData && itemCount >=10">
+              <a href="#">See All</a>
+            </div>
+            <ng-template #noOrder>
+              <div class="text-center mb-4">
+                <button class="alert alert-info px-2">
+                  No Order yet Received
+                </button>
+              </div>
+            </ng-template>
+          </div>
+          <!-- End Order Table -->
+        </div>
+      </div>    
+    </div>
+  </section>

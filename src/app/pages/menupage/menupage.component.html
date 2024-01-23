@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class="container mt-5 mb-5">
+
+    <div class="row">
+
+        <div class="col-lg-6" *ngIf="menuData">
+            <a routerLink="../../menu" class="btn btn-sm btn-dark mb-3">Back</a>
+            <img src="{{menuData.picture}}" width="100%"/>
+            <h1 class="mt-3">{{menuData.name}}</h1>
+            <p>{{menuData.short_description}}</p>
+            <p>{{menuData.price | currency :'INR'}}</p>
+        </div>
+
+        <div class="col-lg-6 col-12">
+            <h1>Enter Your Details</h1>
+            <form [formGroup]="orderForm" (ngSubmit)="placeOrder(menuData.food_id)">
+                <button class="alert alert-success" *ngIf="message!==''"> {{message}}</button>
+                <input type="text" class="form-control" placeholder="Enter Your Full Name" formControlName = "name"  required/>
+                <span class="invaild-feedback text-danger" *ngIf="name && name.invalid && name.touched" >Please enter valid input</span>            
+
+                <input type="text" class="form-control" placeholder="Enter Your Mobile Number " formControlName = "number" required/>
+                <span class="invaild-feedback text-danger" *ngIf="number && number.invalid && number.touched" >Please enter valid input</span>            
+
+                <textarea class="form-control" placeholder="Enter Your Address" formControlName = "address" required></textarea>
+                <span class="invaild-feedback text-danger" *ngIf="address && address.invalid && address.touched" >Please enter valid input</span>            
+
+                <button type="submit" class="btn btn-md btn-dark mt-3" [disabled]="orderForm.invalid">Place Order</button>
+            </form>
+        </div> 
+    </div>
+</div>
+<app-footer></app-footer>

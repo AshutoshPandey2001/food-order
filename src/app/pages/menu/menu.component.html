@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<div class="container mt-5 mb-5">
+
+    <div class="row">
+
+        <div class="col-lg-4" *ngFor="let fd of foodData">
+
+            <div class="foodbox mt-3 mb-3">
+                <img src="{{fd.picture}}">
+                <h1>{{fd.name}}</h1>
+                <p>{{fd.short_description}}</p>
+                <p>{{fd.price | currency:'INR'}}</p>
+                <br/>
+                <a class="buybtn" [routerLink]="['/menu',fd.food_id]">Buy Now &nbsp;<i class="bi bi-bag"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

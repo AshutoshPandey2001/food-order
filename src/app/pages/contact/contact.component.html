@@ -1,0 +1,33 @@
+<app-navbar></app-navbar>
+<div class="container mt-5 mb-5">
+    <h1>Give Feedback or Contact us</h1>
+    <form class="col-lg-8" [formGroup]="contactForm" (ngSubmit)="addFeedback()">
+        <button class="alert alert-success" *ngIf="message!==''"> {{message}}</button>
+        <div class="row">
+            <div class="col-lg-6 mt-2 mb-2">
+                <input formControlName = "firstname" required type="text" class="form-control" placeholder="Enter First Name" >
+                <span class="invaild-feedback text-danger" *ngIf="firstname && firstname.invalid && firstname.touched" >Please enter valid input</span>            
+            </div>
+            <div class="col-lg-6 mt-2 mb-2">
+                <input type="text" class="form-control" placeholder="Enter Last Name" formControlName = "lastname" required  >
+                <span class="invaild-feedback text-danger" *ngIf="lastname && lastname.invalid && lastname.touched" >Please enter valid input</span>            
+            </div>
+            <div class="col-lg-12 mt-2 mb-2">
+                <input type="text" class="form-control" placeholder="Enter Email ID" formControlName = "email" required >
+                <span class="invaild-feedback text-danger" *ngIf="email && email.invalid && email.touched" >Please enter valid input</span>            
+            </div>
+            <div class="col-lg-12 mt-2 mb-2">
+                <input type="number" class="form-control" placeholder="Enter Mobile" formControlName = "number" required>
+                <span class="invaild-feedback text-danger" *ngIf="number && number.invalid && number.touched" >Please enter valid input</span>            
+            </div>
+            <div class="col-lg-12 mt-2 mb-2">
+                <input type="text" class="form-control" placeholder="Describe your issue :)" formControlName = "feedback" required >
+                <span class="invaild-feedback text-danger" *ngIf="feedback && feedback.invalid && feedback.touched" >Please enter valid input</span>            
+            </div>
+            <div class="col-lg-12">
+                <button class="btn btn-md btn-dark" [disabled]="contactForm.invalid">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+<app-footer></app-footer>
